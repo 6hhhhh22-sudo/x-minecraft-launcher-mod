@@ -1,7 +1,7 @@
 <!-- UserLoginAuthoritySelect.vue (unchanged, as socket listener is in createOfflineProfile) -->
 <template>
   <v-card class="pa-4">
-    <v-card-title>Cracked Mode Login</v-card-title>
+    <v-card-title>Cracked Mode Login 0.52.7</v-card-title>
     <v-form ref="offlineForm">
       <v-text-field
         v-model="offlineKey"
