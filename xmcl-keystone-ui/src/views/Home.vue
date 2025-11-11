@@ -1,15 +1,24 @@
 <template>
-  <div ref="scrollElement" class="select-none">
+  <div
+    ref="scrollElement"
+    class="select-none"
+  >
     <HomeCriticalError />
     <transition name="slide-y-reverse-transition" mode="out-in">
-      <div v-if="!isFocus" class="mx-3 relative">
+      <div v-if="!isFocus" class="mx-3 relative" >
         <Transition name="slide-y-reverse-transition">
           <div class="flex items-center justify-center gap-1 sticky top-40 z-3">
-            <v-divider class="divider mx-0" />
+            <v-divider
+              class="divider mx-0"
+            />
             <v-btn class="z-4" icon @click="isFocus = true">
-              <v-icon>keyboard_arrow_down</v-icon>
+              <v-icon>
+                keyboard_arrow_down
+              </v-icon>
             </v-btn>
-            <v-divider class="divider mx-0" />
+            <v-divider
+              class="divider mx-0"
+            />
           </div>
         </Transition>
         <HomeGrid />
@@ -25,13 +34,14 @@
           v-else-if="instance.upstream && instance.upstream.type === 'ftb-modpack'"
           :id="instance.upstream.id"
         />
-        <HomeServerCard :row="0" :rowCount="3" />
       </div>
-      <HomeFocusFooter v-else class="absolute bottom-0 left-0 pb-[26px]" />
+      <HomeFocusFooter
+        v-else
+        class="absolute bottom-0 left-0 pb-[26px]"
+      />
     </transition>
   </div>
 </template>
-
 <script lang="ts" setup>
 import { useDialog } from '@/composables/dialog'
 import { useGlobalDrop } from '@/composables/dropHandler'
@@ -40,18 +50,14 @@ import { kUpstream } from '@/composables/instanceUpdate'
 import { kCompact } from '@/composables/scrollTop'
 import { useTutorial } from '@/composables/tutorial'
 import { useInFocusMode } from '@/composables/uiLayout'
-import { injection } from '@/util/inject'  // فقط injection هنا، مش provide
-import { provide } from 'vue'  // provide من Vue مباشرة
-import { computed, onMounted, ref } from 'vue'
+import { injection } from '@/util/inject'
 import type { DriveStep } from 'driver.js'
-import { useI18n } from 'vue-i18n'
 import HomeCriticalError from './HomeCriticalError.vue'
 import HomeFocusFooter from './HomeFocusFooter.vue'
 import HomeGrid from './HomeGrid.vue'
 import HomeUpstreamCurseforge from './HomeUpstreamCurseforge.vue'
 import HomeUpstreamFeedTheBeast from './HomeUpstreamFeedTheBeast.vue'
 import HomeUpstreamModrinth from './HomeUpstreamModrinth.vue'
-import HomeServerCard from './HomeServerCard.vue'
 
 const isFocus = useInFocusMode()
 const { instance } = injection(kInstance)

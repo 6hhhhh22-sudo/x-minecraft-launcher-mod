@@ -3,7 +3,7 @@ import { ModFile } from '@/util/mod'
 import { Instance } from '@xmcl/instance'
 import { AuthlibInjectorServiceKey, JavaRecord, LaunchOptions, LaunchServiceKey, UserProfile, UserServiceKey, generateLaunchOptionsWithGlobal } from '@xmcl/runtime-api'
 import useSWRV from 'swrv'
-import { InjectionKey, Ref, computed, ref, shallowRef, markRaw, watch } from 'vue'
+import { InjectionKey, Ref } from 'vue'
 import { useGlobalSettings, useSettingsState } from './setting'
 
 export const kInstanceLaunch: InjectionKey<ReturnType<typeof useInstanceLaunch>> = Symbol('InstanceLaunch')
@@ -124,16 +124,6 @@ export function useInstanceLaunch(
     const ver = overrides?.version ?? side === 'client' ? version.value : serverVersion.value
     const token = getLaunchToken(userProfile, instancePath)
 
-    let finalOverrides = { ...overrides }
-
-    // Support for auto-join server
-    if (overrides?.server && side === 'client') {
-      finalOverrides.extraClientArguments = [
-        ...(finalOverrides.extraClientArguments || []),
-        `--server ${overrides.server.ip}:${overrides.server.port}`
-      ]
-    }
-
     return await generateLaunchOptionsWithGlobal(
       { ...instance.value, path: instancePath },
       userProfile,
@@ -142,7 +132,7 @@ export function useInstanceLaunch(
         token,
         operationId,
         side,
-        overrides: finalOverrides,
+        overrides,
         dry,
         javaPath: java.value?.path,
         globalEnv: globalEnv.value,

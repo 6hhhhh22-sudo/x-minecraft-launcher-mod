@@ -13,6 +13,17 @@
     :use-css-transforms="true"
     @breakpoint-changed="onBreakpoint"
   >
+  <HomeCard
+  icon="mdi-server-network"
+  title="Servers"
+  :text="serversText"
+  :icons="serverIcons"
+  :refreshing="false"
+  :button="{ text: 'Manage Servers', icon: 'mdi-server' }"
+  :additionButton="{ text: 'Add Server', icon: 'mdi-plus' }"
+  @navigate="goToServers"
+  @navigate-addition="addServer"
+/>
     <GridItem
       v-for="item in layout"
       :key="item.i"
@@ -53,8 +64,10 @@
         :height="screenshotHeight"
         :instance="instance"
       />
+
     </GridItem>
   </GridLayout>
+
 </template>
 <script lang="ts" setup>
 import { useLocalStorageCache } from '@/composables/cache'
@@ -136,7 +149,16 @@ const layouts = useLocalStorageCache('cardsLayout', () => ({
 }), JSON.stringify, JSON.parse)
 
 const layout = ref([] as GridItemType[])
+import { useServers } from '@/composables/useServers'
+const { text: serversText, icons: serverIcons } = useServers()
 
+const router = useRouter() // من composables/router
+const goToServers = () => router.push('/servers')
+
+const addServer = () => {
+  // افتح الديالوج، مثلا useDialog('ServerAddDialog').show()
+  // أو navigate to /add-server
+}
 let lastBreakpoint = ''
 
 const onBreakpoint = (newBreakpoint: string) => {
