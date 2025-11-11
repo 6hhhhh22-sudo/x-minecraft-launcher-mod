@@ -1,0 +1,54 @@
+import { ref, readonly } from 'vue'
+import type { Server } from '@/entities/server'
+
+const servers = ref<Server[]>([])
+const STORAGE_KEY = 'xmcl_servers'
+
+function load() {
+  try {
+    const json = localStorage.getItem(STORAGE_KEY)
+    if (json) {
+      servers.value = JSON.parse(json)
+    }
+  } catch (e) {
+    console.error('Failed to load servers:', e)
+  }
+}
+
+function save() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(servers.value))
+  } catch (e) {
+    console.error('Failed to save servers:', e)
+  }
+}
+
+load() // Load on init
+
+export function useServers() {
+  const add = (server: Omit<Server, 'id'>) => {
+    const id = crypto.randomUUID()
+    servers.value.push({ ...server, id })
+    save()
+  }
+
+  const remove = (id: string) => {
+    servers.value = servers.value.filter(s => s.id !== id)
+    save()
+  }
+
+  const update = (id: string, updates: Partial<Server>) => {
+    const idx = servers.value.findIndex(s => s.id === id)
+    if (idx > -1) {
+      servers.value[idx] = { ...servers.value[idx], ...updates }
+      save()
+    }
+  }
+
+  return {
+    servers: readonly(servers),
+    add,
+    remove,
+    update
+  }
+}

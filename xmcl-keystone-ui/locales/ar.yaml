@@ -1,0 +1,10 @@
+servers:
+  title: IP Join Server
+  count: "{count} Servers"
+  add: Add Server
+  manage: Manage
+  name: Server Name
+  ip: IP Address
+  port: Port
+  selectVersion: Select Version
+  confirmDelete: Delete this server?
